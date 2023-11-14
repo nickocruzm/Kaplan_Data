@@ -1,25 +1,30 @@
 import pytesseract
 from PIL import Image
 import pandas as pd
-import sys
 import os
 
 if("Kaplan_Data" not in os.getcwd()):
-    DATA_IMAGES = f'{os.getcwd()}/Kaplan_Data/data/images/'
+    DATA_IMAGES_PATH = f'{os.getcwd()}/Kaplan_Data/data/images/'
 else:
-    DATA_IMAGES = f'{os.getcwd()}/data/images/'
+    DATA_IMAGES_PATH = f'{os.getcwd()}/data/images/'
   
-
+imgCount = 1
 images = list()
 
-for fileName in os.listdir(DATA_IMAGES):
+for fileName in os.listdir(DATA_IMAGES_PATH):
+    
     if fileName.endswith(".png"):
-         print(fileName)
-    else:
-        continue
+        if(not fileName[0].isdigit()):
+            oldName = fileName
+            fileName = imgCount + '.png'
+            
+            os.rename(DATA_IMAGES_PATH + oldName, DATA_IMAGES_PATH + fileName)
+        
+        imgCount = imgCount + 1
+        images.append(Image.open(DATA_IMAGES_PATH + fileName))
 
 
-# image = Image.open('math_02.png')
+
 
 # # Use pytesseract to perform OCR on the image and extract text
 # table_text = pytesseract.image_to_string(image)
