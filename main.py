@@ -3,14 +3,22 @@ from PIL import Image
 import pandas as pd
 import os
 
+def isCorrect(symbol, Quiz):
+    if(symbol in ['~v','xo','v','Vv']):
+        Quiz["Correct"].append(1)
+    else:
+        Quiz["Correct"].append(0)
+
 
 cwd = os.getcwd()
+
 if("Kaplan_Data" not in cwd):
     DATA_IMAGES_PATH = f'{cwd}/Kaplan_Data/data/images/'
 else:
     DATA_IMAGES_PATH = f'{cwd}/data/images/'
   
 imgCount = 1
+
 
 # each element is a quiz formatted as a string.
 quizzes = list()
@@ -38,12 +46,15 @@ Quiz = {
     "Correct":[]
 }
 
+QUIZZES = list()
 
 for quiz in quizzes:
     quiz_data = quiz.split()
     for x in quiz_data: 
         if(x in ['~v','xo','v','Vv']):
-            Quiz["Correct"].append(1)
+            isCorrect(x,Quiz)
+        elif(x == 'x'):
+            isCorrect(x,Quiz)
         elif(x == "Number" or x == "Data"):
             sub = x
         elif(x == "Properties" or x == "Interpretation"):
@@ -61,17 +72,18 @@ for quiz in quizzes:
         else:
             continue
 
-
-            
-        
     
-        
-        
-        
+    
+    #df = pd.DataFrame(Quiz)
+    print(Quiz)
+    for k in Quiz.keys():
+        Quiz[k].clear()
+    
 
 
-# Create DataFrame
 
+    
+    
 
 
 
